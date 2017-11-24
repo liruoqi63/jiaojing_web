@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/common.css' />
+    <link rel='stylesheet' href='/css/login.css' />
+    <link rel='stylesheet' href='/css/iconfont.css' />
+  </head>
+  <body>
+    <div class="login">
+		<div class="login-content">
+			<div class="login-header">
+				你说什么就是什么管理系统
+			</div>
+			<div class="login-input">
+				<div class="input-item"><span><i class="iconfont icon-yonghu"></i></span><input type="text" placeholder="用户名" id="username"></div>
+				<div class="hr"></div>
+				<div class="input-item"><span><i class="iconfont icon-mima"></i></span><input type="password" placeholder="密码" id="password"></div>
+			</div>
+			<div class="login-btn">
+				<span class="text-color-sys" id="loginID">登 录</span>
+				<a href="" class="mima-text">忘记密码？</a>
+				<a href="" class="footer-text"> 版权所有 ©️ 你说什么就是什么科技有限公司</a>
+			</div>
+		</div>
+	</div>
+  </body>
+</html>
+<script type="text/javascript" src="/tools/jquery-1.7.2.min.js"></script>
+<!--[if IE 8]>
+<script type="text/javascript"src="/tools/jquery.xdomainrequest.min.js"></script>
+<![endif]-->
+<!--[if IE 9]>
+<script type="text/javascript"src="/tools/jquery.xdomainrequest.min.js"></script>
+<![endif]-->
+<script type="text/javascript" src="/tools/md5.js"></script>
+<script type="text/javascript" src="/tools/mainData.js"></script>
+<script type="text/javascript" src="/tools/util.js"></script>
+<script type="text/javascript" src="/tools/tool.js"></script>
+<script type="text/javascript" src="/app/api.js"></script>
+<script type="text/javascript">
+	var paramsinfo = {
+		id:'32'
+	}
+	tools.ajaxGet(api.login.testInfo,paramsinfo,function (data) {
+			console.log(data)
+	})
+	$("#loginID").click(function () {
+		var userVal=$("#username").val()
+		var passVal=$("#password").val()
+		if(userVal&&passVal){
+			var params = {
+				username:userVal,
+				password:passVal
+			}
+			tools.ajaxPost(api.login.login,params,function (data) {
+				console.log(data)
+				if(data.success){
+					localStorage.verifyToken=data.result.verifyToken
+					location.href = '/main';
+				}else {
+					tools.tip(data.error,'red');
+				}
+			})
+		}else {
+			tools.tip('用户名、密码不能为空','red');//location.href = '/main';
+		}
+
+	})
+</script>
